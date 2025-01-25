@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Text to Speech Converter</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+         :root {
+            --primary-color: #00ff88;
+            --secondary-color: #00b3ff;
+            --accent-color: #ff3366;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a1a, #2c3e50, #1a1a1a);
+            color: white;
+            padding: 20px;
+            background-size: 300% 300%;
+            animation: gradientBG 15s ease infinite;
+        }
+        
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 1s ease;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            color: var(--primary-color);
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+            animation: glow 2s infinite alternate;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #ccc;
+            font-style: italic;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .feature-card i {
+            color: var(--primary-color);
+            margin-right: 10px;
+        }
+        
+        textarea {
+            width: 100%;
+            height: 200px;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            resize: vertical;
+        }
+        
+        textarea:focus {
+            outline: none;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+        
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .control-group {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .control-group:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        
+        select,
+        input[type="range"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            background: rgba(255, 255, 255, 0.9);
+            cursor: pointer;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        button i {
+            font-size: 18px;
+        }
+        
+        .speak-btn {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+        
+        .stop-btn {
+            background: linear-gradient(45deg, var(--accent-color), #ff6b6b);
+            color: white;
+        }
+        
+        .download-btn {
+            background: linear-gradient(45deg, #9c27b0, #673ab7);
+            color: white;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.4);
+        }
+        
+        .status {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .word-count {
+            text-align: right;
+            color: #ccc;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        
+        .favorites {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+        
+        .favorites-list {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        
+        .favorite-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 5px 10px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .favorite-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            .buttons {
+                flex-direction: column;
+            }
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Ultimate Text to Speech Converter</h1>
+            <p class="subtitle">Convert any text to natural-sounding speech in multiple languages</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <i class="fas fa-language"></i>
+                <span>Multiple Languages Support</span>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-save"></i>
+                <span>Save Favorites</span>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-download"></i>
+                <span>Download Audio</span>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-history"></i>
+                <span>History</span>
+            </div>
+        </div>
+
+        <textarea id="text" placeholder="Enter text here... Supports English, मराठी, संस्कृत, हिंदी and many more languages!"></textarea>
+        <div class="word-count">Words: <span id="wordCount">0</span></div>
+
+        <div class="controls">
+            <div class="control-group">
+                <label for="language"><i class="fas fa-globe"></i> Language:</label>
+                <select id="language" onchange="updateVoices()">
+                    <option value="hi-IN">हिंदी (Hindi)</option>
+                    <option value="sa-IN">संस्कृत (Sanskrit)</option>
+                    <option value="mr-IN">मराठी (Marathi)</option>
+                    <option value="en-IN">English (India)</option>
+                    <option value="en-US">English (US)</option>
+                    <option value="bn-IN">বাংলা (Bengali)</option>
+                    <option value="gu-IN">ગુજરાતી (Gujarati)</option>
+                    <option value="ta-IN">தமிழ் (Tamil)</option>
+                    <option value="te-IN">తెలుగు (Telugu)</option>
+                    <option value="kn-IN">ಕನ್ನಡ (Kannada)</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="voice"><i class="fas fa-microphone"></i> Voice:</label>
+                <select id="voice"></select>
+            </div>
+
+            <div class="control-group">
+                <label for="rate"><i class="fas fa-tachometer-alt"></i> Speed: <span id="rateValue">1</span>x</label>
+                <input type="range" id="rate" min="0.5" max="2" value="1" step="0.1" oninput="document.getElementById('rateValue').textContent=this.value">
+            </div>
+
+            <div class="control-group">
+                <label for="pitch"><i class="fas fa-music"></i> Pitch: <span id="pitchValue">1</span></label>
+                <input type="range" id="pitch" min="0.5" max="2" value="1" step="0.1" oninput="document.getElementById('pitchValue').textContent=this.value">
+            </div>
+        </div>
+
+        <div class="buttons">
+            <button class="speak-btn" onclick="speak()">
+                <i class="fas fa-play"></i> Speak
+            </button>
+            <button class="stop-btn" onclick="stopSpeaking()">
+                <i class="fas fa-stop"></i> Stop
+            </button>
+            <button class="download-btn" onclick="downloadAudio()">
+                <i class="fas fa-download"></i> Download
+            </button>
+            <button onclick="addToFavorites()">
+                <i class="fas fa-heart"></i> Add to Favorites
+            </button>
+        </div>
+
+        <div class="status" id="status"></div>
+
+        <div class="favorites">
+            <label><i class="fas fa-star"></i> Favorites</label>
+            <div class="favorites-list" id="favoritesList"></div>
+        </div>
+    </div>
+
+    <script>
+        let speech = new SpeechSynthesisUtterance();
+        let voices = [];
+        let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+
+        window.speechSynthesis.onvoiceschanged = () => {
+            voices = window.speechSynthesis.getVoices();
+            updateVoices();
+        };
+
+        document.getElementById('text').addEventListener('input', function() {
+            const words = this.value.trim().split(/\s+/).filter(word => word.length > 0);
+            document.getElementById('wordCount').textContent = words.length;
+        });
+
+        function updateVoices() {
+            const voiceSelect = document.getElementById("voice");
+            const selectedLang = document.getElementById("language").value;
+
+            voiceSelect.innerHTML = '';
+
+            voices.forEach(voice => {
+                if (voice.lang.includes(selectedLang.split('-')[0])) {
+                    const option = document.createElement("option");
+                    option.value = voice.name;
+                    option.textContent = `${voice.name} (${voice.lang})`;
+                    voiceSelect.appendChild(option);
+                }
+            });
+        }
+
+        function speak() {
+            const text = document.getElementById("text").value;
+            if (text.trim() === '') {
+                updateStatus('Please enter some text first!', 'error');
+                return;
+            }
+
+            window.speechSynthesis.cancel();
+
+            speech = new SpeechSynthesisUtterance();
+            speech.text = text;
+
+            const selectedLang = document.getElementById("language").value;
+            speech.lang = selectedLang;
+
+            speech.rate = parseFloat(document.getElementById("rate").value);
+            speech.pitch = parseFloat(document.getElementById("pitch").value);
+            speech.volume = 1;
+
+            const selectedVoiceName = document.getElementById("voice").value;
+            const selectedVoice = voices.find(voice => voice.name === selectedVoiceName);
+            if (selectedVoice) {
+                speech.voice = selectedVoice;
+            }
+
+            speech.onstart = () => updateStatus('Speaking...', 'success');
+            speech.onend = () => updateStatus('Finished speaking', 'success');
+            speech.onerror = (event) => updateStatus('Error: ' + event.error, 'error');
+
+            window.speechSynthesis.speak(speech);
+        }
+
+        function stopSpeaking() {
+            window.speechSynthesis.cancel();
+            updateStatus('Stopped', 'info');
+        }
+
+        function updateStatus(message, type) {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.style.color = type === 'error' ? '#ff3366' : '#00ff88';
+        }
+
+        function addToFavorites() {
+            const text = document.getElementById("text").value.trim();
+            if (text && !favorites.includes(text)) {
+                favorites.push(text);
+                localStorage.setItem('favorites', JSON.stringify(favorites));
+                updateFavoritesList();
+                updateStatus('Added to favorites!', 'success');
+            }
+        }
+
+        function updateFavoritesList() {
+            const favoritesList = document.getElementById('favoritesList');
+            favoritesList.innerHTML = '';
+            favorites.forEach((text, index) => {
+                const item = document.createElement('div');
+                item.className = 'favorite-item';
+                item.textContent = text.substring(0, 30) + (text.length > 30 ? '...' : '');
+                item.onclick = () => {
+                    document.getElementById('text').value = text;
+                    updateStatus('Loaded from favorites', 'success');
+                };
+                favoritesList.appendChild(item);
+            });
+        }
+
+        async function downloadAudio() {
+            const text = document.getElementById("text").value;
+            if (!text.trim()) {
+                updateStatus('Please enter some text first!', 'error');
+                return;
+            }
+
+            // Note: This is a simplified version. Actual audio download would require 
+            // additional backend support or use of specific APIs
+            updateStatus('Download feature coming soon!', 'info');
+        }
+
+        // Initialize
+        window.onload = () => {
+            if (speechSynthesis.onvoiceschanged !== undefined) {
+                speechSynthesis.onvoiceschanged = () => {
+                    voices = window.speechSynthesis.getVoices();
+                    updateVoices();
+                };
+            }
+            updateFavoritesList();
+        };
+
+        speech.onend = () => {
+            updateStatus('Finished speaking', 'success');
+        };
+    </script>
+</body>
+
+</html>
